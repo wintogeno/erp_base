@@ -116,8 +116,8 @@ jobs:
           ssh-add ~/.ssh/id_rsa
 
       # 4️⃣ Install Ansible
-      - name: Install Ansible
-        run: sudo apt-get install -y -qq ansible openssh-client
+    #  - name: Install Ansible
+    #    run: sudo apt-get install -y -qq ansible openssh-client
 
       # 5️⃣ Create Ansible inventory dynamically
       - name: Create dynamic inventory
