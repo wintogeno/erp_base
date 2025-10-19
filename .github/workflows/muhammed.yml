@@ -107,36 +107,15 @@ jobs:
           path: ./ansible/files/
 
       # 3️⃣ Setup SSH key
-      - name: Setup SSH key from base64
+      - name: Deploy ERPNext locally via Ansible
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY_PRIVATE }}" | base64 --decode > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa
-
-      # 4️⃣ Install Ansible
-    #  - name: Install Ansible
-    #    run: sudo apt-get install -y -qq ansible openssh-client
-
-      # 5️⃣ Create Ansible inventory dynamically
-      - name: Create dynamic inventory
-        run: |
+          # Create local inventory
           cat > ./ansible/inventory.ini <<EOF
           [erpnext]
-          5.78.106.78 
-          [erpnext:vars]
-          ansible_user=root
-          ansible_ssh_private_key_file=~/.ssh/id_rsa 
-          ansible_ssh_common_args='-o StrictHostKeyChecking=no -o ConnectTimeout=10'
+          localhost ansible_connection=local
           EOF
-      - name: Test SSH connection
-        run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@5.78.106.78 "echo 'SSH connection successful'"
-
-      # 6️⃣ Run playbook for remote deployment 123
-      - name: Deploy docker-compose via Ansible
-        run: |
-          ansible-playbook -i ./ansible/inventory.ini ./ansible/docker_erpnext.yml -vvv
+          
+          echo "📋 Running Ansible playbook locally..."
+          ansible-playbook -i ./ansible/inventory.ini ./ansible/docker_erpnext.yml
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
