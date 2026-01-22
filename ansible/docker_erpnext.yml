@@ -10,6 +10,9 @@
     admin_password: admin  # puedes cambiarla si quieres
 
   tasks:
+
+    # Working in progress - Spanish version
+    #Improving the previous Ansible playbook to read apps from a local custom.txt file,
     # ------------------------------------------------------------------------
     # 🗂️ Preparación del servidor
     # ------------------------------------------------------------------------
